@@ -21,7 +21,7 @@ nmap -sC -sV -Pn --min-rate 5000 <TARGET_IP> -oN nmap
 
 The scan revealed a web application running on the target.
 
-![image alt]
+![image alt](https://github.com/Eliaspaz2/HTB-Writeups/blob/e7c2b10b68d52dd6c1ff6e099fa3b1ac05400f8d/01-nmap.png)
 
 ---
 
