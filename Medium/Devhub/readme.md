@@ -22,7 +22,7 @@ Initial scan:
 nmap -p- -sC -sV -Pn <TARGET_IP> -oN nmap
 
 
-<img width="887" height="590" alt="01-nmap-devhub" src="https://github.com/user-attachments/assets/b17c5c7f-354e-45a2-bfe3-0cda696d2790"/>
+![image alt](https://github.com/Eliaspaz2/HTB-Writeups/blob/e78f425ce7adafb9afd0be0c0d3cf803bd42ef9b/Medium/Devhub/01-nmap-devhub.png)
 
 
 
