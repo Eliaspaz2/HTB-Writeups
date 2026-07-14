@@ -11,11 +11,11 @@ This repository contains my personal writeups, notes, and lessons learned while 
 | Difficulty | Completed |
 |------------|----------:|
 | Easy | 2 |
-| Medium | 0 |
+| Medium | 1 |
 | Hard | 0 |
 | Insane | 0 |
 
-**Total Machines:** 2
+**Total Machines:** 3
 
 ---
 
@@ -54,6 +54,7 @@ HTB-Writeups
 |----------|------------|----|--------|
 | Support | Easy | Windows | ✅ |
 | Connected | Easy | Windows | ✅ |
+| Devhub | Medium | Windows | ✅ |
 
 ---
 
