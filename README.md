@@ -10,7 +10,7 @@ This repository contains my personal writeups, notes, and lessons learned while 
 
 | Difficulty | Completed |
 |------------|----------:|
-| Easy | 2 |
+| Easy | 3 |
 | Medium | 3 |
 | Hard | 0 |
 | Insane | 0 |
@@ -53,10 +53,11 @@ HTB-Writeups
 | Machine | Difficulty | OS | Status |
 |----------|------------|----|--------|
 | Support | Easy | Windows | ✅ |
-| Connected | Easy | Windows | ✅ |
-| Devhub | Medium | Windows | ✅ |
-| Helix | Medium | Windows | ✅ |
-| SmartHire | Medium | Windows | ✅ |
+| Connected | Easy | Linux | ✅ |
+| Devhub | Medium | Linux | ✅ |
+| Helix | Medium | Linux | ✅ |
+| SmartHire | Medium | Linux | ✅ |
+| Lame | Easy | Linux | ✅ |
 ---
 
 > **Disclaimer:** These writeups are intended for educational purposes only and are published after officially completing the machines on Hack The Box.
