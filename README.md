@@ -10,12 +10,12 @@ This repository contains my personal writeups, notes, and lessons learned while 
 
 | Difficulty | Completed |
 |------------|----------:|
-| Easy | 5 |
+| Easy | 6 |
 | Medium | 3 |
 | Hard | 0 |
 | Insane | 0 |
 
-**Total Machines:** 8
+**Total Machines:** 9
 
 ---
 
@@ -60,6 +60,7 @@ HTB-Writeups
 | Lame | Easy | Linux | ✅ |
 | Legacy | Easy | Windows | ✅ |
 | Devel | Easy | Windows | ✅ |
+| Bashed | Easy | Linux | ✅ |
 ---
 
 > **Disclaimer:** These writeups are intended for educational purposes only and are published after officially completing the machines on Hack The Box.
