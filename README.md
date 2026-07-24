@@ -10,12 +10,12 @@ This repository contains my personal writeups, notes, and lessons learned while 
 
 | Difficulty | Completed |
 |------------|----------:|
-| Easy | 4 |
+| Easy | 5 |
 | Medium | 3 |
 | Hard | 0 |
 | Insane | 0 |
 
-**Total Machines:** 7
+**Total Machines:** 8
 
 ---
 
@@ -59,6 +59,7 @@ HTB-Writeups
 | SmartHire | Medium | Linux | ✅ |
 | Lame | Easy | Linux | ✅ |
 | Legacy | Easy | Windows | ✅ |
+| Devel | Easy | Windows | ✅ |
 ---
 
 > **Disclaimer:** These writeups are intended for educational purposes only and are published after officially completing the machines on Hack The Box.
