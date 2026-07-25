@@ -148,7 +148,7 @@ ls -l /home/nibbler/personal/stuff/monitor.sh
 The file had the following permissions:
 
 ```text
--rwxr-xr-x
+-rwxrwxrwx
 ```
 
 However, because the script was executed with `sudo`, it was possible to exploit the execution flow by replacing the script with a malicious version.
