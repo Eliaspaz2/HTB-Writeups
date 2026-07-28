@@ -10,12 +10,12 @@ This repository contains my personal writeups, notes, and lessons learned while 
 
 | Difficulty | Completed |
 |------------|----------:|
-| Easy | 10 |
+| Easy | 11 |
 | Medium | 3 |
 | Hard | 0 |
 | Insane | 0 |
 
-**Total Machines:** 13
+**Total Machines:** 14
 
 ---
 
@@ -65,6 +65,7 @@ HTB-Writeups
 | Optium | Easy | Windows | ✅ |
 | Arctic | Easy | Windows | ✅ |
 | Jerry | Easy | Windows | ✅ |
+| Blue | Easy | Windows | ✅ |
 ---
 
 > **Disclaimer:** These writeups are intended for educational purposes only and are published after officially completing the machines on Hack The Box.
