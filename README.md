@@ -10,12 +10,12 @@ This repository contains my personal writeups, notes, and lessons learned while 
 
 | Difficulty | Completed |
 |------------|----------:|
-| Easy | 13 |
+| Easy | 14 |
 | Medium | 3 |
 | Hard | 0 |
 | Insane | 0 |
 
-**Total Machines:** 16
+**Total Machines:** 17
 
 ---
 
@@ -68,6 +68,7 @@ HTB-Writeups
 | Blue | Easy | Windows | ✅ |
 | Netmon | Easy | Windows | ✅ |
 | Sauna | Easy | Windows | ✅ |
+| Twomillion | Easy | Linux | ✅ |
 ---
 
 > **Disclaimer:** These writeups are intended for educational purposes only and are published after officially completing the machines on Hack The Box.
