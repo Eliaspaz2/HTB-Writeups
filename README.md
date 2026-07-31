@@ -11,11 +11,11 @@ This repository contains my personal writeups, notes, and lessons learned while 
 | Difficulty | Completed |
 |------------|----------:|
 | Easy | 14 |
-| Medium | 4 |
+| Medium | 5 |
 | Hard | 0 |
 | Insane | 0 |
 
-**Total Machines:** 18
+**Total Machines:** 19
 
 ---
 
@@ -70,6 +70,7 @@ HTB-Writeups
 | Sauna | Easy | Windows | ✅ |
 | Twomillion | Easy | Linux | ✅ |
 | Escape | Medium | Windows | ✅ |
+| Certified | Medium | Windows | ✅ |
 ---
 
 > **Disclaimer:** These writeups are intended for educational purposes only and are published after officially completing the machines on Hack The Box.
