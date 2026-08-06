@@ -1,8 +1,13 @@
-# Monteverde - Hack The Box
+# Hack The Box - Monteverde
 
-![Difficulty](https://img.shields.io/badge/Difficulty-Medium-orange)
-![OS](https://img.shields.io/badge/OS-Windows-blue)
-![Platform](https://img.shields.io/badge/Platform-Hack%20The%20Box-green)
+<p align="left">
+
+![Hack The Box](https://img.shields.io/badge/Hack%20The%20Box-MONTEVERDE-9FEF00?style=for-the-badge&logo=hackthebox&logoColor=white)
+![OS](https://img.shields.io/badge/OS-Windows-0078D6?style=for-the-badge)
+![Difficulty](https://img.shields.io/badge/Difficulty-Medium-F39C12?style=for-the-badge)
+![Focus](https://img.shields.io/badge/Focus-Active%20Directory-C0392B?style=for-the-badge)
+
+</p>
 
 ---
 
@@ -13,7 +18,6 @@
 | Operating System | Windows |
 | Difficulty | Medium |
 | Target IP | 10.129.228.111 |
-
 ---
 
 # Overview
@@ -276,10 +280,7 @@ Rather than using a large password list, we'll use a small collection of common 
 Execute CrackMapExec:
 
 ```bash
-crackmapexec smb 10.129.228.111 \
--d MEGABANK \
--u userlist \
--p english-basic.txt
+crackmapexec smb 10.129.228.111 -d MEGABANK -u userlist -p english-basic.txt
 ```
 <img width="951" height="777" alt="image" src="https://github.com/user-attachments/assets/1627d087-d019-4002-a141-75adfbcf36b2" />
 
