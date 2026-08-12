@@ -10,12 +10,12 @@ This repository contains my personal writeups, notes, and lessons learned while 
 
 | Difficulty | Completed |
 |------------|----------:|
-| Easy | 14 |
+| Easy | 15 |
 | Medium | 10 |
 | Hard | 0 |
 | Insane | 0 |
 
-**Total Machines:** 24
+**Total Machines:** 25
 
 ---
 
@@ -76,6 +76,7 @@ HTB-Writeups
 | Monteverde | Medium | Windows | ✅
 | Popcorn | Medium | Linux | ✅ |
 | Magic | Medium | Linux | ✅ |
+| MetaTwo | Easy | Linux | ✅ |
 ---
 
 > **Disclaimer:** These writeups are intended for educational purposes only and are published after officially completing the machines on Hack The Box.
