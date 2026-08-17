@@ -10,12 +10,12 @@ This repository contains my personal writeups, notes, and lessons learned while 
 
 | Difficulty | Completed |
 |------------|----------:|
-| Easy | 17 |
+| Easy | 18 |
 | Medium | 10 |
 | Hard | 0 |
 | Insane | 0 |
 
-**Total Machines:** 27
+**Total Machines:** 28
 
 ---
 
@@ -79,6 +79,7 @@ HTB-Writeups
 | MetaTwo | Easy | Linux | ✅ |
 | Paper | Easy | Linux | ✅ |
 | Remote | Easy | Windows | ✅ 
+| Knife | Easy | Linux | ✅ |
 ---
 
 > **Disclaimer:** These writeups are intended for educational purposes only and are published after officially completing the machines on Hack The Box.
