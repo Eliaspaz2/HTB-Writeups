@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/34694023/README.md)
+[README.md](https://github.com/user-attachments/files/34694170/README.md)
 # 🔍 HTB Sherlock — Tracer
 
 ![Plataforma](https://img.shields.io/badge/Plataforma-Hack%20The%20Box-9FEF00?style=flat-square&logo=hackthebox&logoColor=black)
@@ -83,8 +83,8 @@ Estructura resultante:
 ├── chainsaw/   ← contiene mappings/ y rules/
 └── sigma/      ← contiene rules/
 ```
+<img width="1100" height="195" alt="01-clone-repos" src="https://github.com/user-attachments/assets/78c77db6-34f4-4eb8-9b73-879da84bb78c" />
 
-![Clonado de repositorios](images/01-clone-repos.png)
 
 ### 3. Instalar herramientas para Prefetch
 
@@ -126,7 +126,8 @@ chainsaw hunt /home/kali/htb_labs_blue/tracer/Tracer/C/Windows/System32/winevt/l
 
 Chainsaw cargó **3147 reglas** y procesó los **153 archivos EVTX** (214 MiB) en unos 3 minutos. Los resultados se agrupan por categoría (Account Tampering, Antivirus, etc.):
 
-![Chainsaw hunt](images/02-chainsaw-hunt.png)
+<img width="1909" height="743" alt="02-chainsaw-hunt" src="https://github.com/user-attachments/assets/9536f191-efef-4d98-be52-c13d709794f9" />
+
 
 Entre las detecciones aparecen varias relacionadas con PsExec en el host **Forela-Wkstn002**:
 
@@ -154,7 +155,8 @@ En **Options → Advanced Options** se apunta a la carpeta Prefetch del laborato
 Z:\home\kali\htb_labs_blue\tracer\Tracer\C\Windows\prefetch
 ```
 
-![WinPrefetchView en Wine](images/03-winprefetchview-wine.png)
+<img width="1920" height="965" alt="03-winprefetchview-wine" src="https://github.com/user-attachments/assets/59e3a7ae-782f-485b-b4a3-cf772b698d9b" />
+
 
 ❌ **Problema:** el archivo `PSEXESVC.EXE-AD70946C.pf` aparece, pero las columnas **Process EXE**, **Run Counter** y **Last Run Time** quedan vacías o en 0.
 
@@ -168,7 +170,8 @@ sccainfo /home/kali/htb_labs_blue/tracer/Tracer/C/Windows/prefetch/PSEXESVC.EXE-
 
 `sccainfo` sí descomprime el Prefetch y muestra el **run count**, los **últimos 8 tiempos de ejecución (en UTC)** y los **archivos referenciados** por el proceso:
 
-![sccainfo run count](images/04-sccainfo-runcount.png)
+<img width="1914" height="846" alt="04-sccainfo-runcount" src="https://github.com/user-attachments/assets/f61ccdc2-d345-453c-93f2-1600fcdd5ef9" />
+
 
 | # | Last run time (UTC) |
 |---|---|
@@ -192,7 +195,8 @@ En la lista de archivos referenciados aparecen los **Key Files** que deja PsExec
 ...
 ```
 
-![sccainfo key files](images/05-sccainfo-keyfiles.png)
+<img width="1900" height="435" alt="05-sccainfo-keyfiles" src="https://github.com/user-attachments/assets/4a804953-4c7d-4c50-9b9c-d4ff57f615a4" />
+
 
 ---
 
@@ -241,7 +245,8 @@ Como la víctima es `Forela-Wkstn002`, el origen del movimiento lateral es la ot
 
 Buscando en los resultados del hunt la detección **PSEXEC Remote Execution File Artefact** (Sysmon 11) con la marca de tiempo de la 5ª ejecución (12:06:5x UTC), aparece el evento con **Record ID `159599`**:
 
-![Key File de la 5ta instancia](images/06-q5-keyfile.png)
+<img width="1914" height="684" alt="06-q5-keyfile" src="https://github.com/user-attachments/assets/242a88b5-436d-4d0d-a310-7e6f9330ff09" />
+
 
 `TargetFilename: C:\Windows\PSEXEC-FORELA-WKSTN001-95F03CFE.key`
 
@@ -260,7 +265,8 @@ chainsaw search -t 'Event.System.EventRecordID: =159599' \
 
 > ⚠️ Los nombres de campo distinguen mayúsculas: es `Event.System`, **no** `Event.system`. Con minúscula, Chainsaw devuelve `Found 0 hits`.
 
-![EventRecordID 159599](images/07-q6-eventrecordid.png)
+<img width="1911" height="853" alt="07-q6-eventrecordid" src="https://github.com/user-attachments/assets/6c0eb5c8-c46d-464d-9790-1240bae2d32b" />
+
 
 El evento es un Sysmon **Event ID 11** (FileCreate) en `Forela-Wkstn002`, con `SystemTime: 2023-09-07T12:06:55.064Z` y `CreationUtcTime: 2023-09-07 12:06:55.054`.
 
@@ -278,7 +284,8 @@ chainsaw search 'stderr' /home/kali/htb_labs_blue/tracer/Tracer/C/Windows/System
 
 Se elige el que coincide con la 5ª instancia: `SystemTime 2023-09-07T12:06:55.084Z`, **EventRecordID `159603`**, inmediatamente después de la creación del Key File (`159599`).
 
-![Named pipe stderr](images/08-q7-namedpipe.png)
+<img width="1919" height="812" alt="08-q7-namedpipe" src="https://github.com/user-attachments/assets/1885068f-087d-476a-974f-7b5772a06d3d" />
+
 
 **Respuesta:** `\PSEXESVC-FORELA-WKSTN001-3056-stderr`
 
@@ -355,4 +362,3 @@ Se elige el que coincide con la 5ª instancia: `SystemTime 2023-09-07T12:06:55.0
 
 ---
 
-<p align="center">Hecho por <b>[TU NOMBRE / USUARIO]</b> · Estudiante de la Universidad Siglo 21</p>
